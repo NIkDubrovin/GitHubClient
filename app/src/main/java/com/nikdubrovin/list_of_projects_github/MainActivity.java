@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,9 +15,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,22 +78,27 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
     public void onClickGetData(View view) {
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_CityName);
         String name_login = editText.getText().toString();
+
+        String[] str = name_login.split(" ");
+        Log.i(TAG,  str[0] + str[1]);
+
         getGithubData = new GetGithubData();
-        getGithubData.setUser(name_login);
+       // getGithubData.setUser(name_login);
+        getGithubData.setUser(str[0]);
         getGithubData.setData("repos");
         getGithubData.execute();
         try {
-            JSONObject result = getGithubData.get();
+            ArrayList<JSONObject> result =  getGithubData.get();
+            int count = Integer.parseInt(str[1]);
             Log.i(TAG, "result: " + result);
-            String name = result.getString("name");
-            URL url = new URL(result.getString("url_repos"));
-            String desc = result.getString("description");
-            String lang = result.getString("language");
+            String name = result.get(count).getString("name");
+            URL url = new URL(result.get(count).getString("url_repos"));
+            String desc = result.get(count).getString("description");
+            String lang = result.get(count).getString("language");
 
             Toast.makeText(getApplicationContext(),
                     "Репозиторий : " + name + "\n" +"URL: " + url + "\n" +

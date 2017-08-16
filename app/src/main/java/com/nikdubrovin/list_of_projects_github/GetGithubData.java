@@ -11,27 +11,33 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static android.R.attr.name;
+import static android.util.Log.i;
 
 
 /**
  * Created by NikDubrovin on 16.08.2017.
  */
 
-public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
+public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> {
 
     private final String TAG = "GitHubAPI";
     private final String URL_API = "https://api.github.com/users/";
     private URL url;
     private String User;
     private String Data;
+    private ArrayList<JSONObject> listJsonArray = new ArrayList<>();
    // https://api.github.com/users/yatingupta10/repos - список репозиториев с данными
 
-
     @Override
-    protected JSONObject doInBackground(String... strings) {
-        JSONObject jsonReturnFile = new JSONObject();
+     protected ArrayList<JSONObject> doInBackground(String... strings) {
 
         try{
 
@@ -41,16 +47,16 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
 
             if(validateUrl(url_str)) { // Проверка - является ли строка url-адресом
                 url = new URL(url_str);
-                Log.i(TAG,url_str);
+                i(TAG,url_str);
             }
             else
-                Log.i(TAG,"Failed URL!");
+                i(TAG,"Failed URL!");
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             if (connection == null)
-                Log.i(TAG,"Failed to make connection!");
+                i(TAG,"Failed to make connection!");
             else
-                Log.i(TAG,"Successfully to make connection!");
+                i(TAG,"Successfully to make connection!");
             connection.setRequestMethod("GET");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -61,21 +67,26 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
                 response.append(inputLine);
             }
             in.close();
-          //  Log.i(TAG, "Json File: " + response.toString()); -  Skipped 105 frames!  The application may be doing too much work on its main thread.
 
             //endregion Получение строки закончили
 
             JSONArray json = new JSONArray(response.toString()); // Превращаем String in JSONObject
-                String name = json.getJSONObject(0).getString("name");
-                Log.i(TAG, "NAME: " + name);
-                String lang = json.getJSONObject(0).getString("language");
-                Log.i(TAG, "Language: " + lang);
-                String url_repos = json.getJSONObject(0).getString("html_url");
-                Log.i(TAG, "URL_REPOS: " + url_repos);
-                String description = json.getJSONObject(0).getString("description");
-                Log.i(TAG, "Description: " + description);
 
-                jsonReturnFile.put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang);
+            for(int i= 0;i<json.length();i++)
+                listJsonArray.add(json.getJSONObject(i));
+
+            for (int i =0;i<listJsonArray.size();i++) {
+                String name = listJsonArray.get(i).getString("name");
+               // i(TAG, "Name: " + name + " " + i);
+                String lang = listJsonArray.get(i).getString("language");
+            //    i(TAG, "Language: " + lang + " " + i);
+                String url_repos = listJsonArray.get(i).getString("html_url");
+              //  i(TAG, "Url_repos: " + url_repos + " " + i);
+                String description = listJsonArray.get(i).getString("description");
+              //  i(TAG, "Description: " + description + " " + i);
+
+                listJsonArray.get(i).put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -83,8 +94,8 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
         catch (Throwable cause){
             cause.printStackTrace();
         }
-        Log.i(TAG, "jsonReturn: " + jsonReturnFile);
-        return jsonReturnFile;
+
+        return listJsonArray;
     }
 
     public static boolean validateUrl(String adress){
