@@ -1,5 +1,8 @@
 package com.nikdubrovin.list_of_projects_github;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,10 +13,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import static android.R.attr.country;
-import static android.R.attr.description;
-import static android.R.attr.name;
 
 
 /**
@@ -40,12 +39,13 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
 
             String url_str = URL_API +  User + "/" + Data;
 
-            if(validateUrl(url_str)) // Проверка - является ли строка url-адресом
+            if(validateUrl(url_str)) { // Проверка - является ли строка url-адресом
                 url = new URL(url_str);
+                Log.i(TAG,url_str);
+            }
             else
-            Log.i(TAG,"Failed URL!");
+                Log.i(TAG,"Failed URL!");
 
-            Log.i(TAG,url_str);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             if (connection == null)
                 Log.i(TAG,"Failed to make connection!");
@@ -66,7 +66,6 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
             //endregion Получение строки закончили
 
             JSONArray json = new JSONArray(response.toString()); // Превращаем String in JSONObject
-            for (int i =0;i<json.length();i++) {
                 String name = json.getJSONObject(0).getString("name");
                 Log.i(TAG, "NAME: " + name);
                 String lang = json.getJSONObject(0).getString("language");
@@ -76,8 +75,7 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
                 String description = json.getJSONObject(0).getString("description");
                 Log.i(TAG, "Description: " + description);
 
-                jsonReturnFile.put("name" + i, name).put("url_repos" + i, url_repos).put("description" + i, description).put("language" + i, lang);
-            }
+                jsonReturnFile.put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -89,9 +87,10 @@ public class GetGithubData extends AsyncTask<String,Void,JSONObject> {
         return jsonReturnFile;
     }
 
-    public boolean validateUrl(String adress){
+    public static boolean validateUrl(String adress){
         return android.util.Patterns.WEB_URL.matcher(adress).matches();
     }
+
 
     public void setUser(String User) {this.User = User;}
     public void setData(String Data) {this.Data = Data;}
