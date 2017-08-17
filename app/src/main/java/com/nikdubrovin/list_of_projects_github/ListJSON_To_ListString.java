@@ -8,7 +8,7 @@ import java.net.URL;
  * Created by NikDubrovin on 17.08.2017.
  */
 
- public class ParseListJson {
+ public class ListJSON_To_ListString {
     private JSONObject result;
     private String name;
     private URL url;
@@ -16,10 +16,10 @@ import java.net.URL;
     private String lang;
     private String fork;
     private int index;
-    private final String TAG = "ParseListJson";
+    private final String TAG = "ListJSON_To_ListString";
 
 
-    public ParseListJson(JSONObject result) {
+    public ListJSON_To_ListString(JSONObject result) {
         this.result = result;
         try {
             name = result.getString("name");
@@ -31,7 +31,6 @@ import java.net.URL;
          catch (Throwable cause){cause.printStackTrace();}
     }
 
-    public void setIndex(int index) { this.index = index;}
     public String getName() {
      //   Log.i(TAG,"getName: " + name);
         return name;

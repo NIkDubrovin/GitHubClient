@@ -1,9 +1,8 @@
 package com.nikdubrovin.list_of_projects_github;
 
 import android.app.Activity;
-import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,24 +10,19 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import static com.nikdubrovin.list_of_projects_github.SelectDataActivity.StorageClass.selfparseListJsonArray;
-
-
+import static com.nikdubrovin.list_of_projects_github.SelectTypeDataActivity.StorageClass.selfParseListStringArray;
 
 /**
  * Created by NikDubrovin on 17.08.2017.
  */
 
-public class ListOfRepositories extends Activity {
+public class ListOfRepositories extends Activity  {
 
-    private List<String> list_reposes = new ArrayList();
+    private ArrayList<String> list_reposes = new ArrayList();
     private ArrayAdapter<String> adapter;
     private ListView listView;
     private final String TAG = "ListOfRepositories";
-    private ArrayList<ParseListJson> parseListJsonArray;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -41,8 +35,8 @@ public class ListOfRepositories extends Activity {
 
         //setListAdapter(adapter);
 
-        for (int i =0;i<selfparseListJsonArray.size();i++)
-        adapter.add(Integer.toString(i) + ". " + selfparseListJsonArray.get(i).getName());
+        for (int i = 0; i< selfParseListStringArray.size(); i++)
+        adapter.add(Integer.toString(i) + ". " + selfParseListStringArray.get(i).getName());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -51,16 +45,21 @@ public class ListOfRepositories extends Activity {
                 // по позиции получаем выбранный элемент
                 String selectedRepos = adapter.getItem(position);
                 int index = adapter.getPosition(selectedRepos);
-                Toast.makeText(getApplicationContext(),
-                    "Репозиторий : " + selectedRepos + "\n" +
-                            "URL: " + selfparseListJsonArray.get(index).getUrl().toString() + "\n" +
-                            "Описание: " + selfparseListJsonArray.get(index).getDesc() + "\n" +
-                            "Язык: " + selfparseListJsonArray.get(index).getLang() + "\n" +
-                            "Fork :" + selfparseListJsonArray.get(index).getFork(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(ListOfRepositories.this, InfoReposActivity.class);
+                intent.putExtra("index", index);
+                if(selectedRepos.isEmpty())  Toast.makeText(getApplicationContext(),"Ничего не выбрано", Toast.LENGTH_SHORT).show();
+                else startActivity(intent);
+//                Toast.makeText(getApplicationContext(),
+//                    "Репозиторий : " + selectedRepos + "\n" +
+//                            "URL: " + selfParseListStringArray.get(index).getUrl().toString() + "\n" +
+//                            "Описание: " + selfParseListStringArray.get(index).getDesc() + "\n" +
+//                            "Язык: " + selfParseListStringArray.get(index).getLang() + "\n" +
+//                            "Fork :" + selfParseListStringArray.get(index).getFork(), Toast.LENGTH_SHORT).show()
             }
         });
-
         adapter.notifyDataSetChanged();
-
     }
+
+
 }

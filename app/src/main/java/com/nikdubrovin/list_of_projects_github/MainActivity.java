@@ -5,23 +5,16 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
-
-import org.json.JSONObject;
-
-import java.net.URL;
-import java.text.BreakIterator;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = "MainActivity";
     private EditText editText;
     private Button getDataButton;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +32,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getDataButton = (Button)findViewById(R.id.button_getData);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        
+        String selected = spinner.getSelectedItem().toString();
+        Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();
     }
-
 
     //region Menu
     @Override
@@ -62,11 +59,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.about_app :
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("About")
-                        .setMessage("by @NIkDubrovin\n" +
-                                "Rus\n" +
-                                "По определенным критериям при помощи GitHub API v3, JSON и др. формируется и выводится список проектов + доп. информация.\n" +
-                                "ENG\n" +
-                                "By using GitHub API v3, JSON, etc. shows the list of projects + additional information.");
+                        .setMessage(R.string.About_str);
                 AlertDialog alert = builder.create();
                 alert.show();
                 return true;
@@ -76,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
     //endregion
 
-    public  boolean isOnline() {
+    public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -91,10 +84,12 @@ public class MainActivity extends AppCompatActivity {
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_ReposName);
 
-        Intent intent = new Intent(MainActivity.this, SelectDataActivity.class);
+        Intent intent = new Intent(MainActivity.this, SelectTypeDataActivity.class);
 
         intent.putExtra("username", editText.getText().toString());
        // intent.putExtra("username", "assusdan");
-        startActivity(intent);
+
+        if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
+        else startActivity(intent);
     }
 }

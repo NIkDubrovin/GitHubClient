@@ -22,11 +22,15 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SelectDataActivity"
+        <activity android:name=".SelectTypeDataActivity"
             android:label="@string/app_name">
         </activity>
 
         <activity android:name=".ListOfRepositories"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity android:name=".InfoReposActivity"
             android:label="@string/app_name">
         </activity>
 

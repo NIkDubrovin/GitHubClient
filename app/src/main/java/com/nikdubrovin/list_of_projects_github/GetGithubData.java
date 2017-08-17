@@ -77,7 +77,6 @@ public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> 
                 String fork = listJsonArray.get(i).getString("fork");
 
              //   i(TAG, "Name: " + name + "\n" + "Language: " + lang + "\n" + "Uri_Repos: " + url_repos + "\n" + "Description: " + description + "\n" +  "fork: " + fork + "\n" + i );
-
                 listJsonArray.get(i).put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang).put("fork",fork);
             }
 
@@ -94,7 +93,6 @@ public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> 
     public static boolean validateUrl(String adress){
         return android.util.Patterns.WEB_URL.matcher(adress).matches();
     }
-
 
     public void setUser(String User) {this.User = User;}
     public void setData(String Data) {this.Data = Data;}
