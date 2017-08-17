@@ -71,15 +71,14 @@ public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> 
 
             for (int i =0;i<listJsonArray.size();i++) {
                 String name = listJsonArray.get(i).getString("name");
-               // i(TAG, "Name: " + name + " " + i);
                 String lang = listJsonArray.get(i).getString("language");
-            //    i(TAG, "Language: " + lang + " " + i);
                 String url_repos = listJsonArray.get(i).getString("html_url");
-              //  i(TAG, "Url_repos: " + url_repos + " " + i);
                 String description = listJsonArray.get(i).getString("description");
-              //  i(TAG, "Description: " + description + " " + i);
+                String fork = listJsonArray.get(i).getString("fork");
 
-                listJsonArray.get(i).put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang);
+                i(TAG, "Name: " + name + "\n" + "Language: " + lang + "\n" + "Uri_Repos: " + url_repos + "\n" + "Description: " + description + "\n" +  "fork: " + fork + "\n" + i );
+
+                listJsonArray.get(i).put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang).put("fork",fork);
             }
 
         }catch (Exception e){

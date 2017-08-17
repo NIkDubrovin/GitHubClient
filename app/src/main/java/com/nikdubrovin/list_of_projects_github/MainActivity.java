@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -57,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.about_app :
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("About")
-                        .setMessage("by @NIkDubrovin");
+                        .setMessage("by @NIkDubrovin\n" +
+                                "Rus\n" +
+                                "По определенным критериям при помощи GitHub API v3, JSON и др. формируется и выводится список проектов + доп. информация.\n" +
+                                "ENG\n" +
+                                "By using GitHub API v3, JSON, etc. shows the list of projects + additional information.");
                 AlertDialog alert = builder.create();
                 alert.show();
                 return true;
@@ -99,11 +102,12 @@ public class MainActivity extends AppCompatActivity {
             URL url = new URL(result.get(count).getString("url_repos"));
             String desc = result.get(count).getString("description");
             String lang = result.get(count).getString("language");
+            String fork = result.get(count).getString("fork");
 
             Toast.makeText(getApplicationContext(),
                     "Репозиторий : " + name + "\n" +"URL: " + url + "\n" +
                             "Описание: " + desc + "\n" +
-                            "Язык: " + lang, Toast.LENGTH_LONG).show();
+                            "Язык: " + lang + "\n" + "Fork :" + fork, Toast.LENGTH_LONG).show();
         }catch (Throwable cause){
             cause.printStackTrace();
             Toast.makeText(getApplicationContext(),"Что-то пошло не так..", Toast.LENGTH_SHORT).show();
