@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -33,9 +35,25 @@ public class MainActivity extends AppCompatActivity {
 
         getDataButton = (Button)findViewById(R.id.button_getData);
         spinner = (Spinner) findViewById(R.id.spinner);
-        
-        String selected = spinner.getSelectedItem().toString();
-        Toast.makeText(getApplicationContext(), selected, Toast.LENGTH_SHORT).show();
+
+        ArrayAdapter<?> adapter =
+                ArrayAdapter.createFromResource(this, R.array.langs, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected, int selectedItemPosition, long selectedId) {
+
+                String[] choose = getResources().getStringArray(R.array.langs);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Ваш выбор: " + choose[selectedItemPosition], Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 
     //region Menu
@@ -84,9 +102,12 @@ public class MainActivity extends AppCompatActivity {
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_ReposName);
 
+        String selected = spinner.getSelectedItem().toString();
+
         Intent intent = new Intent(MainActivity.this, SelectTypeDataActivity.class);
 
         intent.putExtra("username", editText.getText().toString());
+        intent.putExtra("lang", selected);
        // intent.putExtra("username", "assusdan");
 
         if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();

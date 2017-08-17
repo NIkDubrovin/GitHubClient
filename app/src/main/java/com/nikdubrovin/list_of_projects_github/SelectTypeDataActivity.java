@@ -36,6 +36,7 @@ public class SelectTypeDataActivity extends Activity {
     public void onClickRepos(View view) {
 
         String name_login = getIntent().getExtras().getString("username");
+        String lang = getIntent().getExtras().getString("lang");
 
         getGithubData = new GetGithubData();
         getGithubData.setUser(name_login);

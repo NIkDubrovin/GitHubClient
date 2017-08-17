@@ -12,8 +12,9 @@
     <string name="User_Name">user_name</string>
     <string name="editTextName"></string>
     <string-array name="langs">
-        <item>JavaScript</item>
+        <item>All</item>
         <item>Java</item>
+        <item>JavaScript</item>
         <item>С</item>
         <item>С++</item>
         <item>С#</item>
