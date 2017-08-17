@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private GetGithubData getGithubData;
+
     private final String TAG = "MainActivity";
     private EditText editText;
     private Button getDataButton;
@@ -88,48 +88,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickGetData(View view) {
-
-        Intent intent = new Intent();
-        intent.setClass(MainActivity.this,SelectDataActivity.class);
-
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_CityName);
-        String name_login;
 
-            name_login = editText.getText().toString();
-            if(name_login.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "Заполнены не все поля", Toast.LENGTH_SHORT).show();
-            }else break start;
+        Intent intent = new Intent(MainActivity.this, SelectDataActivity.class);
 
-        String[] strmas = new String[2];
-        try {
-            strmas = name_login.split(" ");
-        }catch (Exception e) {e.printStackTrace(); Toast.makeText(getApplicationContext(),"Заполнены не все поля", Toast.LENGTH_SHORT).show();}
-        Log.i(TAG,  strmas[0] + strmas[1]);
-
-        getGithubData = new GetGithubData();
-       // getGithubData.setUser(name_login);
-        getGithubData.setUser(strmas[0]);
-        getGithubData.setData("repos");
-        getGithubData.execute();
-        try {
-            ArrayList<JSONObject> result =  getGithubData.get();
-            int count = Integer.parseInt(strmas[1]);
-            Log.i(TAG, "result: " + result);
-            String name = result.get(count).getString("name");
-            URL url = new URL(result.get(count).getString("url_repos"));
-            String desc = result.get(count).getString("description");
-            String lang = result.get(count).getString("language");
-            String fork = result.get(count).getString("fork");
-
-            Toast.makeText(getApplicationContext(),
-                    "Репозиторий : " + name + "\n" +"URL: " + url + "\n" +
-                            "Описание: " + desc + "\n" +
-                            "Язык: " + lang + "\n" + "Fork :" + fork, Toast.LENGTH_LONG).show();
-        }catch (Throwable cause){
-            cause.printStackTrace();
-            Toast.makeText(getApplicationContext(),"Что-то пошло не так..", Toast.LENGTH_SHORT).show();
-        }
+        intent.putExtra("username", editText.getText().toString());
+        startActivity(intent);
     }
-
 }
