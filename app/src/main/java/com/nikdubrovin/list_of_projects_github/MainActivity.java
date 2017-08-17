@@ -1,6 +1,7 @@
 package com.nikdubrovin.list_of_projects_github;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -12,12 +13,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private GetGithubData getGithubData;
     private final String TAG = "MainActivity";
     private EditText editText;
+    private Button getDataButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getDataButton = (Button)findViewById(R.id.button_getData);
     }
 
 
@@ -82,21 +88,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickGetData(View view) {
+
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this,SelectDataActivity.class);
+
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_CityName);
-        String name_login = editText.getText().toString();
+        String name_login;
 
-        String[] str = name_login.split(" ");
-        Log.i(TAG,  str[0] + str[1]);
+            name_login = editText.getText().toString();
+            if(name_login.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "Заполнены не все поля", Toast.LENGTH_SHORT).show();
+            }else break start;
+
+        String[] strmas = new String[2];
+        try {
+            strmas = name_login.split(" ");
+        }catch (Exception e) {e.printStackTrace(); Toast.makeText(getApplicationContext(),"Заполнены не все поля", Toast.LENGTH_SHORT).show();}
+        Log.i(TAG,  strmas[0] + strmas[1]);
 
         getGithubData = new GetGithubData();
        // getGithubData.setUser(name_login);
-        getGithubData.setUser(str[0]);
+        getGithubData.setUser(strmas[0]);
         getGithubData.setData("repos");
         getGithubData.execute();
         try {
             ArrayList<JSONObject> result =  getGithubData.get();
-            int count = Integer.parseInt(str[1]);
+            int count = Integer.parseInt(strmas[1]);
             Log.i(TAG, "result: " + result);
             String name = result.get(count).getString("name");
             URL url = new URL(result.get(count).getString("url_repos"));

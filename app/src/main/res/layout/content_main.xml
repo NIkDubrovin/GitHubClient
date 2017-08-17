@@ -10,11 +10,11 @@
 
 
     <Button
-        android:id="@+id/button_get"
+        android:id="@+id/button_getData"
         android:layout_width="145dp"
         android:layout_height="64dp"
         android:onClick="onClickGetData"
-        android:text="@string/button_get"
+        android:text="@string/button_getData"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
