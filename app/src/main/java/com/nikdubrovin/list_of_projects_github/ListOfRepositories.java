@@ -1,6 +1,7 @@
 package com.nikdubrovin.list_of_projects_github;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.nikdubrovin.list_of_projects_github.SelectDataActivity.StorageClass.selfparseListJsonArray;
+
 
 
 /**
@@ -21,41 +24,39 @@ import java.util.ArrayList;
 
 public class ListOfRepositories extends Activity {
 
-    private ArrayList<String> reposes = new ArrayList();
+    private List<String> list_reposes = new ArrayList();
     private ArrayAdapter<String> adapter;
-    private ListView reposList;
+    private ListView listView;
     private final String TAG = "ListOfRepositories";
+    private ArrayList<ParseListJson> parseListJsonArray;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_list_of_repos);
 
-        reposList = (ListView) findViewById(R.id.repos_list);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, reposes);
-        reposList.setAdapter(adapter);
+        listView = (ListView) findViewById(R.id.repos_list);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,list_reposes);
+        listView.setAdapter(adapter);
 
-        final String name = getIntent().getStringExtra("name");
-        final URL url_repos = (URL) getIntent().getExtras().get("url_repos");
-        final String desc = getIntent().getStringExtra("desc");
-        final String lang = getIntent().getStringExtra("lang");
-        final String fork = getIntent().getStringExtra("fork");
-        adapter.add(name);
-        Log.i(TAG,"URI_REPOS: " + url_repos);
+        //setListAdapter(adapter);
 
-        reposList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        for (int i =0;i<selfparseListJsonArray.size();i++)
+        adapter.add(Integer.toString(i) + ". " + selfparseListJsonArray.get(i).getName());
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
                 // по позиции получаем выбранный элемент
                 String selectedRepos = adapter.getItem(position);
+                int index = adapter.getPosition(selectedRepos);
                 Toast.makeText(getApplicationContext(),
                     "Репозиторий : " + selectedRepos + "\n" +
-                            "URL: " + url_repos + "\n" +
-                            "Описание: " + desc + "\n" +
-                            "Язык: " + lang + "\n" +
-                            "Fork :" + fork, Toast.LENGTH_LONG).show();
+                            "URL: " + selfparseListJsonArray.get(index).getUrl().toString() + "\n" +
+                            "Описание: " + selfparseListJsonArray.get(index).getDesc() + "\n" +
+                            "Язык: " + selfparseListJsonArray.get(index).getLang() + "\n" +
+                            "Fork :" + selfparseListJsonArray.get(index).getFork(), Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -89,11 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickGetData(View view) {
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
-        editText = (EditText)findViewById(R.id.EditText_CityName);
+        editText = (EditText)findViewById(R.id.EditText_ReposName);
 
         Intent intent = new Intent(MainActivity.this, SelectDataActivity.class);
 
         intent.putExtra("username", editText.getText().toString());
+       // intent.putExtra("username", "assusdan");
         startActivity(intent);
     }
 }
