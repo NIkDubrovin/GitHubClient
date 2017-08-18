@@ -3,6 +3,7 @@ package com.nikdubrovin.list_of_projects_github;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static com.nikdubrovin.list_of_projects_github.SelectTypeDataActivity.StorageClass.selfParseListStringArray;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 
 /**
  * Created by NikDubrovin on 17.08.2017.
@@ -29,14 +30,17 @@ public class ListOfRepositories extends Activity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_repos);
 
-        listView = (ListView) findViewById(R.id.repos_list);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,list_reposes);
+        listView = findViewById(R.id.repos_list);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list_reposes);
         listView.setAdapter(adapter);
 
         //setListAdapter(adapter);
-
-        for (int i = 0; i< selfParseListStringArray.size(); i++)
-        adapter.add(Integer.toString(i) + ". " + selfParseListStringArray.get(i).getName());
+        if(selfArrayList_ListJSON_To_ListStringArray.size() != 0) {
+            for (int i = 0; i < selfArrayList_ListJSON_To_ListStringArray.size(); i++)
+                adapter.add(Integer.toString(i) + ". " + selfArrayList_ListJSON_To_ListStringArray.get(i).getName());
+              Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray != null");
+        }else Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray = null");
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override

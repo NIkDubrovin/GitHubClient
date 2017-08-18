@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 
-import static com.nikdubrovin.list_of_projects_github.SelectTypeDataActivity.StorageClass.selfParseListStringArray;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 
 /**
  * Created by NikDubrovin on 17.08.2017.
@@ -18,6 +18,7 @@ public class InfoReposActivity extends Activity {
     private TextView textViewName;
     private TextView textViewDesc;
     private TextView textViewFork;
+    private TextView textViewLang;
     private TextView textViewURL;
     private final String TAG = InfoReposActivity.class.getSimpleName();
 
@@ -29,17 +30,20 @@ public class InfoReposActivity extends Activity {
         textViewName =  findViewById(R.id.textViewName);
         textViewDesc =  findViewById(R.id.textViewDesc);
         textViewFork = findViewById(R.id.textViewFork);
+        textViewLang = findViewById(R.id.textViewLang);
         textViewURL =  findViewById(R.id.textViewURL);
 
         int index = getIntent().getExtras().getInt("index");
+        if (selfArrayList_ListJSON_To_ListStringArray.size() == 0)
+            Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray = null");
+        else  Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray != null");
      //   Log.i(TAG,"Name: " + selfParseListStringArray.get(index).getName() + "\n"/* + editTextName.getText().toString() + "\n" */+ "Index: " + index + "\n" + "\n" + "\n");
-        textViewName.setText("Name: " + selfParseListStringArray.get(index).getName());
-        textViewDesc.setText("Description: " + selfParseListStringArray.get(index).getDesc());
-        Log.i(TAG, "\n" + "Select lang: " + selfParseListStringArray.get(index).getLang() + "\n");
-        textViewFork.setText("Language: " + selfParseListStringArray.get(index).getLang());
+        textViewName.setText("Name: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getName());
+        textViewDesc.setText("Description: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getDesc());
        // if( selfParseListStringArray.get(index).getFork().toString().replace("/forks","") == selfParseListStringArray.get(index).getUrl().toString())
-     //   textViewFork.setText("Fork: " + selfParseListStringArray.get(index).getFork());
-        textViewURL.setText(selfParseListStringArray.get(index).getUrl().toString());
+        textViewFork.setText("Fork: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getFork());
+        textViewFork.setText("Language: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getLang());
+        textViewURL.setText(selfArrayList_ListJSON_To_ListStringArray.get(index).getUrl().toString());
 
         textViewURL.setMovementMethod(LinkMovementMethod.getInstance());
     }

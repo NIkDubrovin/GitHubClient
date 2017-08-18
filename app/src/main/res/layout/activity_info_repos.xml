@@ -22,11 +22,17 @@
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.TextView" />
 
     <TextView
+        android:id="@+id/textViewLang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.TextView" />
+
+    <TextView
         android:id="@+id/textViewURL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.TextView"
         android:autoLink="all"
         android:linksClickable="true"
-        />
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.TextView" />
+
 </LinearLayout>

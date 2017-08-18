@@ -28,6 +28,11 @@
         <item>Swift</item>
         <item>TypeScript</item>
         <item>Pascal</item>
+        <item>Lua</item>
+        <item>Makefile</item>
+        <item>VisualBasic</item>
+        <item>Delphi</item>
+        <item>R</item>
     </string-array>
 
 
