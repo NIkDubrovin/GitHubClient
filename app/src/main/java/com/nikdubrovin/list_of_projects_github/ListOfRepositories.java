@@ -22,7 +22,7 @@ public class ListOfRepositories extends Activity  {
     private ArrayList<String> list_reposes = new ArrayList();
     private ArrayAdapter<String> adapter;
     private ListView listView;
-    private final String TAG = "ListOfRepositories";
+    private final String TAG = ListOfRepositories.class.getSimpleName();
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {

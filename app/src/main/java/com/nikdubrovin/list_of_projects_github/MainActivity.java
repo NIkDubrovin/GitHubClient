@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +19,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
 public class MainActivity extends AppCompatActivity {
 
 
-    private final String TAG = "MainActivity";
+    private final String TAG = MainActivity.class.getSimpleName();
     private EditText editText;
     private Button getDataButton;
     private Spinner spinner;
@@ -102,13 +104,14 @@ public class MainActivity extends AppCompatActivity {
         if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_ReposName);
 
-        String selected = spinner.getSelectedItem().toString();
+        String selectLang = spinner.getSelectedItem().toString();
 
         Intent intent = new Intent(MainActivity.this, SelectTypeDataActivity.class);
 
-        intent.putExtra("username", editText.getText().toString());
-        intent.putExtra("lang", selected);
-       // intent.putExtra("username", "assusdan");
+        //intent.putExtra("username", editText.getText().toString());
+        intent.putExtra("selectLang", selectLang);
+        Log.i(TAG, "\n" + "Select lang: " + selectLang + "\n");
+        intent.putExtra("username", "NIkDubrovin");
 
         if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
         else startActivity(intent);

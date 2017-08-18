@@ -16,7 +16,7 @@ import java.net.URL;
     private String lang;
     private String fork;
     private int index;
-    private final String TAG = "ListJSON_To_ListString";
+    private final String TAG = ListJSON_To_ListString.class.getSimpleName();
 
 
     public ListJSON_To_ListString(JSONObject result) {

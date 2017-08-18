@@ -15,18 +15,18 @@ import java.util.ArrayList;
 
 import static android.util.Log.i;
 
-
 /**
  * Created by NikDubrovin on 16.08.2017.
  */
 
-public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> {
+public class GetGitHubData extends AsyncTask<String,Void,ArrayList<JSONObject>> {
 
-    private final String TAG = "GitHubAPI";
+    private final String TAG = GetGitHubData.class.getSimpleName();
     private final String URL_API = "https://api.github.com/users/";
     private URL url;
     private String User;
     private String Data;
+    private String selectLang;
     private ArrayList<JSONObject> listJsonArray = new ArrayList<>();
    // https://api.github.com/users/yatingupta10/repos - список репозиториев с данными
 
@@ -37,7 +37,7 @@ public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> 
 
             //region Получаем  Json-строку( виде String) от сервера при помощи Http запроса
 
-            String url_str = URL_API +  User + "/" + Data;
+            String url_str = URL_API + User + "/" + Data;
 
             if(validateUrl(url_str)) { // Проверка - является ли строка url-адресом
                 url = new URL(url_str);
@@ -63,21 +63,20 @@ public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> 
             in.close();
 
             //endregion Получение строки закончили
-
             JSONArray json = new JSONArray(response.toString()); // Превращаем String in JSONObject
 
-            for(int i= 0;i<json.length();i++)
+            for(int i= 0;i < json.length();i++)
                 listJsonArray.add(json.getJSONObject(i));
 
-            for (int i =0;i<listJsonArray.size();i++) {
-                String name = listJsonArray.get(i).getString("name");
-                String lang = listJsonArray.get(i).getString("language");
-                String url_repos = listJsonArray.get(i).getString("html_url");
-                String description = listJsonArray.get(i).getString("description");
-                String fork = listJsonArray.get(i).getString("fork");
-
-             //   i(TAG, "Name: " + name + "\n" + "Language: " + lang + "\n" + "Uri_Repos: " + url_repos + "\n" + "Description: " + description + "\n" +  "fork: " + fork + "\n" + i );
-                listJsonArray.get(i).put("name", name).put("url_repos", url_repos).put("description", description).put("language", lang).put("fork",fork);
+            for (int i = 0;i < listJsonArray.size();i++) {
+                if(listJsonArray.get(i).getString("language").toString() == selectLang){
+                   /* listJsonArray.get(i).
+                            put("name",listJsonArray.get(i).getString("name")).
+                            put("url_repos", listJsonArray.get(i).getString("html_url")).
+                            put("description", CheckDesc(listJsonArray.get(i).getString("description"))).
+                            put("language", listJsonArray.get(i).getString("language")).
+                            put("fork", listJsonArray.get(i).getString("fork"));*/
+                } else  i(TAG,"InFor: " + listJsonArray.get(i).getString("name") + " / " + "false" );
             }
 
         }catch (Exception e){
@@ -96,4 +95,11 @@ public class GetGithubData extends AsyncTask<String,Void,ArrayList<JSONObject>> 
 
     public void setUser(String User) {this.User = User;}
     public void setData(String Data) {this.Data = Data;}
+    public void setLang(String selectLang) {this.selectLang = selectLang;}
+    public String CheckDesc(String str) {
+            if (str.equals(""))
+              str = "Description not found";
+        return str;
+    }
+
 }

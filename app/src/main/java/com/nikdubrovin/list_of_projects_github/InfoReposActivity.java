@@ -1,19 +1,9 @@
 package com.nikdubrovin.list_of_projects_github;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.URLSpan;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.TextView;
 
 
@@ -43,10 +33,12 @@ public class InfoReposActivity extends Activity {
 
         int index = getIntent().getExtras().getInt("index");
      //   Log.i(TAG,"Name: " + selfParseListStringArray.get(index).getName() + "\n"/* + editTextName.getText().toString() + "\n" */+ "Index: " + index + "\n" + "\n" + "\n");
-
-        textViewName.setText("Name: " + selfParseListStringArray.get(index).getName().toString());
-        textViewDesc.setText("Description: " + selfParseListStringArray.get(index).getDesc().toString());
-        textViewFork.setText("Fork: " + selfParseListStringArray.get(index).getFork().toString());
+        textViewName.setText("Name: " + selfParseListStringArray.get(index).getName());
+        textViewDesc.setText("Description: " + selfParseListStringArray.get(index).getDesc());
+        Log.i(TAG, "\n" + "Select lang: " + selfParseListStringArray.get(index).getLang() + "\n");
+        textViewFork.setText("Language: " + selfParseListStringArray.get(index).getLang());
+       // if( selfParseListStringArray.get(index).getFork().toString().replace("/forks","") == selfParseListStringArray.get(index).getUrl().toString())
+     //   textViewFork.setText("Fork: " + selfParseListStringArray.get(index).getFork());
         textViewURL.setText(selfParseListStringArray.get(index).getUrl().toString());
 
         textViewURL.setMovementMethod(LinkMovementMethod.getInstance());

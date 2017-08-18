@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,8 +21,8 @@ import static com.nikdubrovin.list_of_projects_github.SelectTypeDataActivity.Sto
 
 public class SelectTypeDataActivity extends Activity {
 
-    private GetGithubData getGithubData;
-    private final String TAG = "SelectTypeDataActivity";
+    private GetGitHubData getGitHubData;
+    private final String TAG = SelectTypeDataActivity.class.getSimpleName();
     private ArrayList<ListJSON_To_ListString> arrayList_ListJSON_To_ListStringArray;
     private ArrayList<JSONObject> result;
 
@@ -36,14 +37,16 @@ public class SelectTypeDataActivity extends Activity {
     public void onClickRepos(View view) {
 
         String name_login = getIntent().getExtras().getString("username");
-        String lang = getIntent().getExtras().getString("lang");
+        String selectLang = getIntent().getExtras().getString("selectLang");
+        Log.i(TAG, "\n" + "Select lang: " + selectLang + "\n");
 
-        getGithubData = new GetGithubData();
-        getGithubData.setUser(name_login);
-        getGithubData.setData("repos");
-        getGithubData.execute();
+        getGitHubData = new GetGitHubData();
+        getGitHubData.setUser(name_login);
+        getGitHubData.setData("repos");
+        getGitHubData.setLang(selectLang);
+        getGitHubData.execute();
         try {
-            result = getGithubData.get();
+            result = getGitHubData.get();
             arrayList_ListJSON_To_ListStringArray = new ArrayList<>();
             for (int i = 0;i < result.size();i++)
             arrayList_ListJSON_To_ListStringArray.add(new ListJSON_To_ListString(result.get(i)));
