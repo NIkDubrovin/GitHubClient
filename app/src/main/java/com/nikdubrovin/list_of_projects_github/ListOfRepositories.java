@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountRepos;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 
 /**
@@ -24,6 +25,7 @@ public class ListOfRepositories extends Activity  {
     private ArrayAdapter<String> adapter;
     private ListView listView;
     private final String TAG = ListOfRepositories.class.getSimpleName();
+    private boolean Event = false;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -35,8 +37,7 @@ public class ListOfRepositories extends Activity  {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list_reposes);
         listView.setAdapter(adapter);
 
-        //setListAdapter(adapter);
-        if(selfArrayList_ListJSON_To_ListStringArray.size() != 0) {
+        if(selfArrayList_ListJSON_To_ListStringArray.size() != 0 && !Event) {
             for (int i = 0; i < selfArrayList_ListJSON_To_ListStringArray.size(); i++)
                 adapter.add(Integer.toString(i) + ". " + selfArrayList_ListJSON_To_ListStringArray.get(i).getName());
               Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray != null");

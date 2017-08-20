@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        spinner.setPrompt("Select your favorite language!");
+       // spinner.setPrompt("Select your favorite language!");
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent,
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("selectLang", selectLang);
       //  intent.putExtra("username", "ashleymcnamara");
         Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray" + "username: " + editText.getText().toString());
-     //   if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
-     /*   else*/ startActivity(intent);
+        if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
+        else startActivity(intent);
     }
 }

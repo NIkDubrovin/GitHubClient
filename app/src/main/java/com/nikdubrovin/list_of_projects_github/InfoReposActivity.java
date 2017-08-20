@@ -34,13 +34,13 @@ public class InfoReposActivity extends Activity {
         textViewURL =  findViewById(R.id.textViewURL);
 
         int index = getIntent().getExtras().getInt("index");
+
         if (selfArrayList_ListJSON_To_ListStringArray.size() == 0)
             Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray = null");
         else  Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray != null");
-     //   Log.i(TAG,"Name: " + selfParseListStringArray.get(index).getName() + "\n"/* + editTextName.getText().toString() + "\n" */+ "Index: " + index + "\n" + "\n" + "\n");
+
         textViewName.setText("Name: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getName());
         textViewDesc.setText("Description: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getDesc());
-       // if( selfParseListStringArray.get(index).getFork().toString().replace("/forks","") == selfParseListStringArray.get(index).getUrl().toString())
         textViewFork.setText("Fork: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getFork());
         textViewFork.setText("Language: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getLang());
         textViewURL.setText(selfArrayList_ListJSON_To_ListStringArray.get(index).getUrl().toString());
