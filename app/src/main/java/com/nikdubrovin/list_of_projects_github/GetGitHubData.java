@@ -2,6 +2,7 @@ package com.nikdubrovin.list_of_projects_github;
 
 
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -14,15 +15,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.RandomAccess;
 
 import static android.util.Log.i;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountRepos;
-
-
 
 /**
  * Created by NikDubrovin on 16.08.2017.
@@ -32,17 +30,21 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
 
     private final String TAG = GetGitHubData.class.getSimpleName();
     private final String URL_API = "https://api.github.com/users/";
+    private String url_str;
     private URL url;
     private String User;
     private String Data;
     private String selectLang;
-    private boolean checkNull = false;
-    private ArrayList<JSONObject> listJsonArray = new ArrayList<>();
+    private ArrayList<JSONObject> listJsonArray;
+    JSONObject json_about;
     private static final int PERL_PAGE = 100; //Max = 100 item
-    private int CountPage  = 1;
+    private int CountPage;
     private boolean ChangeReposUser;
     private boolean AddValueList = false;
-    private boolean BanGitHub = false;
+    private boolean checkNull = false;
+    private int FinishPut;
+    private boolean IsRateLimit;
+    private int CountRateLimit;
 
    // https://api.github.com/users/yatingupta10/repos - список репозиториев с данными
 
@@ -51,7 +53,12 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
         try {
             //region Получаем Json-строку(в виде String) от сервера при помощи Http запроса
             if(Data == null) Data = "";
-            String url_str = URL_API + User + Data + "?per_page=" + Integer.toString(PERL_PAGE) + "&page=" + CountPage;
+            if(!IsRateLimit) {
+                url_str = URL_API + User + Data + "?per_page=" + Integer.toString(PERL_PAGE) + "&page=" + CountPage;
+            }
+            else {
+                url_str = "https://api.github.com/rate_limit";
+            }
            // https://api.github.com/users/NIkDubrovin?per_page=100
           //  https://api.github.com/users/NIkDubrovin/repos?per_page=100
 
@@ -77,31 +84,40 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-             //   i(TAG, response.toString());
+            i(TAG,response.toString());
 
             in.close();
-            }catch (IOException e){e.printStackTrace(); BanGitHub = true; }
+            }catch (IOException e){e.printStackTrace();checkNull = true; }
             //endregion Получение строки закончили
 
-            if(!AddValueList) {
-                if (ChangeReposUser) {
+                if (ChangeReposUser && !checkNull && !IsRateLimit) {
                     JSONArray json = new JSONArray(response.toString()); // Превращаем String in JSONObject
+                    listJsonArray = new ArrayList<>();
 
                     for (int i = 0; i < json.length(); i++)
                         listJsonArray.add(json.getJSONObject(i));
 
-                    selfArrayList_ListJSON_To_ListStringArray.clear();
+                    if(AddValueList)
+                    {
+                        Log.i(TAG, "CountRepos - selfArray.size() = " + (CountRepos - selfArrayList_ListJSON_To_ListStringArray.size()));
+                        final int temp_size = selfArrayList_ListJSON_To_ListStringArray.size();
+                        FinishPut = (CountRepos - temp_size);
+                    }
+                    else {
+                        selfArrayList_ListJSON_To_ListStringArray.clear();
+                        FinishPut  = listJsonArray.size();
+                    }
 
-                    for (int i = 0; i < listJsonArray.size(); i++) {
+                    for (int i = 0; i < FinishPut; i++) {
                         if (listJsonArray.get(i).getString("language").equals(selectLang) || selectLang.equals("All"))
                             selfArrayList_ListJSON_To_ListStringArray.add(
                                     new ListJSON_To_ListString(
                                             listJsonArray.get(i).
                                                     put("name", listJsonArray.get(i).getString("name")).
-                                                    put("url_repos", listJsonArray.get(i).getString("html_url")).
                                                     put("description", CheckDesc(listJsonArray.get(i).getString("description"))).
                                                     put("language", listJsonArray.get(i).getString("language")).
-                                                    put("fork", listJsonArray.get(i).getString("fork"))
+                                                    put("fork", listJsonArray.get(i).getString("fork")).
+                                                    put("url_repos", listJsonArray.get(i).getString("html_url"))
                                     )
                             );
                         else
@@ -113,63 +129,36 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
                         checkNull = true;
                     } else Log.i(TAG, "selfArrayList_ListJSON_To_ListStringArray != null");
 
-                    Log.i(TAG,"ChangeReposUser: " +  ChangeReposUser + "  / AddValueList: "  + AddValueList);
-                } else {
-                    JSONObject json_about = new JSONObject(response.toString()); // Превращаем String in JSONObject
+                }
+                else if (!ChangeReposUser && !checkNull && !IsRateLimit){
+                    json_about = new JSONObject(response.toString()); // Превращаем String in JSONObject
                     CountRepos = 0;
-
                     CountRepos = json_about.getInt("public_repos");
-
-                    Log.i(TAG,"ChangeReposUser: " +  ChangeReposUser + " / AddValueList: "  + AddValueList);
-                    Log.i(TAG,"CountRepos : " + CountRepos + " = " + " In ChangeReposUser == false");
                 }
-            }else {
-                JSONArray json = new JSONArray(response.toString()); // Превращаем String in JSONObject
-
-                listJsonArray.clear();
-                for (int i = 0; i < json.length(); i++)
-                    listJsonArray.add(json.getJSONObject(i));
-
-                Log.i(TAG, "CountRepos - selfArray.size() = " + (CountRepos - selfArrayList_ListJSON_To_ListStringArray.size()));
-               final int temp_size = selfArrayList_ListJSON_To_ListStringArray.size();
-                for (int i = 0; i < (CountRepos - temp_size); i++) {
-                    if (listJsonArray.get(i).getString("language").equals(selectLang) || selectLang.equals("All"))
-                        selfArrayList_ListJSON_To_ListStringArray.add(
-                                new ListJSON_To_ListString(
-                                        listJsonArray.get(i).
-                                                put("name", listJsonArray.get(i).getString("name")).
-                                                put("url_repos", listJsonArray.get(i).getString("html_url")).
-                                                put("description", CheckDesc(listJsonArray.get(i).getString("description"))).
-                                                put("language", listJsonArray.get(i).getString("language")).
-                                                put("fork", listJsonArray.get(i).getString("fork"))
-                                )
-                        );
-                    else
-                        i(TAG, "language != selectLang " + listJsonArray.get(i).getString("name") + " / " + "false");
+                else if(IsRateLimit && !ChangeReposUser && !checkNull) {
+                    JSONObject json_rate = new JSONObject(response.toString()); // Превращаем String in JSONObject
+                    CountRateLimit = 0;
+                    JSONObject json = new JSONObject(json_rate.getString("rate"));
+                    CountRateLimit = json.getInt("remaining");
+                    Log.i(TAG,"CountRateLimit: " +  CountRateLimit);
                 }
-                Log.i(TAG,"Count Repos: " +  CountRepos + " / selfArray.size(): "  + selfArrayList_ListJSON_To_ListStringArray.size() + " / temp_size : " + temp_size);
-                Log.i(TAG,"ChangeReposUser: " +  ChangeReposUser + " / AddValueList: "  + AddValueList);
-            }
             }catch(Exception e){
                 e.printStackTrace();
             }
               catch(Throwable cause){
                 cause.printStackTrace();
             }
-
             return checkNull;
         }
-
 
     public static boolean validateUrl(String adress ){
         return android.util.Patterns.WEB_URL.matcher(adress).matches();
     }
-
     public void setUser(String User) {this.User = User;}
     public void setData(String Data) {this.Data = "/" + Data;}
     public void setSelectLang(String selectLang) {this.selectLang = selectLang;}
     public String CheckDesc(String str) {
-            if (str == null)
+            if (str.equals(""))
               str = "Description not found";
         return str;
     }
@@ -177,32 +166,13 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
     public void setCountPage(int CountPage) {this.CountPage = CountPage;}
     public int getCountPage() {return CountPage;}
     public void setAddValueList(boolean AddValueList) {this.AddValueList = AddValueList;}
-    public boolean getBunGithub(){return BanGitHub;}
-
+    public void setIsRateLimit (boolean IsRateLimit) {this.IsRateLimit = IsRateLimit;}
+    public int getRateLimit () {return  CountRateLimit;}
 
     static public class StorageClass{
         static ArrayList<ListJSON_To_ListString> selfArrayList_ListJSON_To_ListStringArray = new ArrayList<>();
         static int CountRepos;
         public StorageClass() {}
 
-    }
-
-     public static ArrayList<ListJSON_To_ListString> AddArraList(ArrayList<ListJSON_To_ListString> a, ArrayList<ListJSON_To_ListString> b) {
-        if ((a == null) || (a.isEmpty() && (b != null))) return b;
-        if ((b == null) || b.isEmpty()) return a;
-        int aSize = a.size();
-        int bSize = b.size();
-        // Закладываем размер достаточный для всех элементов
-          ArrayList<ListJSON_To_ListString> result = new ArrayList(aSize + bSize);
-        // Если списки обеспечивают быстрый доступ к своим элементам, например ArrayList
-        if ((a instanceof RandomAccess) && (b instanceof RandomAccess)) {
-            for (int i = 0; i < aSize; i++) result.add(a.get(i));
-            for (int i = 0; i < bSize; i++) result.add(b.get(i));
-        } else {
-            // А если это какие-то крестьянские списки, то копируем по-крестьянски
-            result.addAll(a);
-            result.addAll(b);
-        }
-        return result;
     }
 }

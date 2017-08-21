@@ -25,7 +25,6 @@ public class ListOfRepositories extends Activity  {
     private ArrayAdapter<String> adapter;
     private ListView listView;
     private final String TAG = ListOfRepositories.class.getSimpleName();
-    private boolean Event = false;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -37,17 +36,15 @@ public class ListOfRepositories extends Activity  {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list_reposes);
         listView.setAdapter(adapter);
 
-        if(selfArrayList_ListJSON_To_ListStringArray.size() != 0 && !Event) {
             for (int i = 0; i < selfArrayList_ListJSON_To_ListStringArray.size(); i++)
                 adapter.add(Integer.toString(i) + ". " + selfArrayList_ListJSON_To_ListStringArray.get(i).getName());
-              Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray != null");
-        }else Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray = null");
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
-                // по позиции получаем выбранный элемент
+                // По позиции получаем выбранный элемент
                 String selectedRepos = adapter.getItem(position);
                 int index = adapter.getPosition(selectedRepos);
 

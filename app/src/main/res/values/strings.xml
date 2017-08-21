@@ -34,6 +34,6 @@
         <item>Delphi</item>
         <item>R</item>
     </string-array>
-
+    <string name="rate_limit">Лимит запросов</string>
 
 </resources>

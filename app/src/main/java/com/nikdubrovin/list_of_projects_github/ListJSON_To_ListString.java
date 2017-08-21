@@ -22,11 +22,11 @@ import java.net.URL;
     public ListJSON_To_ListString(JSONObject result) {
         this.result = result;
         try {
-            name = result.getString("name");
-            url = new URL(result.getString("url_repos"));
-            desc = result.getString("description");
-            lang = result.getString("language");
-            fork = result.getString("fork");
+            this.name = result.getString("name");
+            this.url = new URL(result.getString("url_repos"));
+            this.desc = result.getString("description");
+            this.lang = result.getString("language");
+            this.fork = result.getString("fork");
         }catch (Exception e){e.printStackTrace();}
          catch (Throwable cause){cause.printStackTrace();}
     }

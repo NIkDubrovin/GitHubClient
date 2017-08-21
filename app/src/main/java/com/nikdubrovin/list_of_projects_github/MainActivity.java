@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private final String TAG = MainActivity.class.getSimpleName();
@@ -42,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-       // spinner.setPrompt("Select your favorite language!");
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent,
                                        View itemSelected, int selectedItemPosition, long selectedId) {
@@ -56,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
     }
 
     //region Menu
@@ -83,6 +79,24 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage(R.string.About_str);
                 AlertDialog alert = builder.create();
                 alert.show();
+                return true;
+            case R.id.rate_limit :
+                boolean result = false;
+                GetGitHubData getGitHubData = new GetGitHubData();
+                getGitHubData.setIsRateLimit(true);
+                getGitHubData.setChangeReposUser(false);
+                getGitHubData.setAddValueList(false);
+                getGitHubData.execute();
+                try {
+                    result = getGitHubData.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (result)
+                    Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Осталось: " + getGitHubData.getRateLimit() + " запросов", Toast.LENGTH_SHORT).show();
+                getGitHubData.cancel(true);
                 return true;
         }
 
@@ -112,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("username", editText.getText().toString());
         intent.putExtra("selectLang", selectLang);
       //  intent.putExtra("username", "ashleymcnamara");
-        Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray" + "username: " + editText.getText().toString());
         if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
         else startActivity(intent);
     }

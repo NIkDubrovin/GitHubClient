@@ -38,14 +38,13 @@ public class SelectTypeDataActivity extends Activity {
     public void onClickRepos(View view) {
         selfArrayList_ListJSON_To_ListStringArray.clear();
 
-        // CountRepos
+        //region CountRepos
         getGitHubData = new GetGitHubData();
         getGitHubData.setUser(name_login);
         getGitHubData.setSelectLang(selectLang);
         getGitHubData.setChangeReposUser(false);
         getGitHubData.setAddValueList(false);
         getGitHubData.execute();
-
         try {
             result = getGitHubData.get();
         } catch (Exception e) {
@@ -55,29 +54,14 @@ public class SelectTypeDataActivity extends Activity {
         getGitHubData.cancel(true);
 
         Log.i( TAG + " GitHub" ,"CountRepos: " + CountRepos);
-        // CountRepos
+        //endregion CountRepos
 
-        if(getGitHubData.getBunGithub()){/* startActivity(intent);*/   Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();}
-        getGitHubData = new GetGitHubData();
-        getGitHubData.setUser(name_login);
-        getGitHubData.setSelectLang(selectLang);
-        getGitHubData.setData("repos");
-        getGitHubData.setChangeReposUser(true);
-        getGitHubData.setAddValueList(false);
-        getGitHubData.execute();
-        try {
-            result = getGitHubData.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
-        }
         if (result)
-            Toast.makeText(getApplicationContext(), "Репозиториев с выбранным языком не существует", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
+
         getGitHubData.cancel(true);
-        Log.i("GitHub", Integer.toString(selfArrayList_ListJSON_To_ListStringArray.size()) + " = / != " + CountRepos);
-        int count = 1;
+        int count = 0;
         while (true) {
-            Log.i("GitHub + repos", Integer.toString(selfArrayList_ListJSON_To_ListStringArray.size()) + " = / != " + CountRepos);
             if (selfArrayList_ListJSON_To_ListStringArray.size() != CountRepos) {
                 GetGitHubData getGitHubData = new GetGitHubData();
                 getGitHubData.setUser(name_login);
@@ -86,31 +70,31 @@ public class SelectTypeDataActivity extends Activity {
                 getGitHubData.setData("repos");
                 getGitHubData.setChangeReposUser(true);
                 getGitHubData.setAddValueList(true);
+                getGitHubData.setIsRateLimit(false);
                 getGitHubData.execute();
                 try {
                     boolean result = getGitHubData.get();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.i("GitHub + repos", Integer.toString(selfArrayList_ListJSON_To_ListStringArray.size()) + " = / != " + CountRepos);
                 getGitHubData.cancel(true);
-                if(count == 4) break;
+                if(count == 3) break;
             } else break;
         }
         Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
         startActivity(intent);
-
     }
 
     public void onClickStarred(View view) {
         selfArrayList_ListJSON_To_ListStringArray.clear();
-        if(getGitHubData.getBunGithub()){/* startActivity(intent);*/   Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();}
+
         getGitHubData = new GetGitHubData();
         getGitHubData.setUser(name_login);
         getGitHubData.setSelectLang(selectLang);
         getGitHubData.setData("starred");
         getGitHubData.setChangeReposUser(true);
         getGitHubData.setAddValueList(false);
+        getGitHubData.setIsRateLimit(false);
         getGitHubData.execute();
         try {
             result = getGitHubData.get();
@@ -119,9 +103,8 @@ public class SelectTypeDataActivity extends Activity {
             Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
         }
         if (result)
-            Toast.makeText(getApplicationContext(), "Репозиториев с выбранным языком не существует", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
         getGitHubData.cancel(true);
-        Log.i("GitHub", Integer.toString(selfArrayList_ListJSON_To_ListStringArray.size()) + " = / != " + CountRepos);
 
         Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
         startActivity(intent);

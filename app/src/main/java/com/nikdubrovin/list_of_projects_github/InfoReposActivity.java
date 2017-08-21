@@ -35,10 +35,6 @@ public class InfoReposActivity extends Activity {
 
         int index = getIntent().getExtras().getInt("index");
 
-        if (selfArrayList_ListJSON_To_ListStringArray.size() == 0)
-            Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray = null");
-        else  Log.i(TAG,"selfArrayList_ListJSON_To_ListStringArray != null");
-
         textViewName.setText("Name: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getName());
         textViewDesc.setText("Description: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getDesc());
         textViewFork.setText("Fork: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getFork());
