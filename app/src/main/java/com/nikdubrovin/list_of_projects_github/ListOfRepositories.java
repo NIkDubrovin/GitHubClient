@@ -41,6 +41,7 @@ public class ListOfRepositories extends Activity  {
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
@@ -50,14 +51,8 @@ public class ListOfRepositories extends Activity  {
 
                 Intent intent = new Intent(ListOfRepositories.this, InfoReposActivity.class);
                 intent.putExtra("index", index);
-                if(selectedRepos.isEmpty())  Toast.makeText(getApplicationContext(),"Ничего не выбрано", Toast.LENGTH_SHORT).show();
+                if(selectedRepos.isEmpty())  Toast.makeText(getApplicationContext(),getResources().getString(R.string.null_select), Toast.LENGTH_SHORT).show();
                 else startActivity(intent);
-//                Toast.makeText(getApplicationContext(),
-//                    "Репозиторий : " + selectedRepos + "\n" +
-//                            "URL: " + selfParseListStringArray.get(index).getUrl().toString() + "\n" +
-//                            "Описание: " + selfParseListStringArray.get(index).getDesc() + "\n" +
-//                            "Язык: " + selfParseListStringArray.get(index).getLang() + "\n" +
-//                            "Fork :" + selfParseListStringArray.get(index).getFork(), Toast.LENGTH_SHORT).show()
             }
         });
         adapter.notifyDataSetChanged();

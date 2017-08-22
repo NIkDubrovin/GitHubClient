@@ -15,7 +15,6 @@ import java.net.URL;
     private String desc;
     private String lang;
     private String fork;
-    private int index;
     private final String TAG = ListJSON_To_ListString.class.getSimpleName();
 
 
@@ -23,10 +22,10 @@ import java.net.URL;
         this.result = result;
         try {
             this.name = result.getString("name");
-            this.url = new URL(result.getString("url_repos"));
             this.desc = result.getString("description");
             this.lang = result.getString("language");
             this.fork = result.getString("fork");
+            this.url = new URL(result.getString("url_repos"));
         }catch (Exception e){e.printStackTrace();}
          catch (Throwable cause){cause.printStackTrace();}
     }

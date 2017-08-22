@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String[] choose = getResources().getStringArray(R.array.langs);
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Ваш выбор: " + choose[selectedItemPosition], Toast.LENGTH_SHORT);
+                        getResources().getString(R.string.your_choice) + choose[selectedItemPosition], Toast.LENGTH_SHORT);
                 toast.show();
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -93,9 +92,13 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (result)
-                    Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(getApplicationContext(), "Осталось: " + getGitHubData.getRateLimit() + " запросов", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            getResources().getString(R.string.rate_limit) +
+                                    getGitHubData.getRateLimit() +
+                                    getResources().getString(R.string.requests),
+                            Toast.LENGTH_SHORT).show();
                 getGitHubData.cancel(true);
                 return true;
         }
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickGetData(View view) {
-        if(!isOnline())  Toast.makeText(getApplicationContext(),"Проверьте подключение к интернету", Toast.LENGTH_SHORT).show();
+        if(!isOnline())  Toast.makeText(getApplicationContext(),getResources().getString(R.string.check_internet), Toast.LENGTH_SHORT).show();
         editText = (EditText)findViewById(R.id.EditText_ReposName);
 
         String selectLang = spinner.getSelectedItem().toString();
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("username", editText.getText().toString());
         intent.putExtra("selectLang", selectLang);
       //  intent.putExtra("username", "ashleymcnamara");
-        if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),"Проверьте правильность введенных данных", Toast.LENGTH_SHORT).show();
+        if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),getResources().getString(R.string.check_characters), Toast.LENGTH_SHORT).show();
         else startActivity(intent);
     }
 }

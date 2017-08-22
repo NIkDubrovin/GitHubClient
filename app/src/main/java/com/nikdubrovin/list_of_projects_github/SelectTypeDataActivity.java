@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountRepos;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfNameLogin;
 
 /**
  * Created by NikDubrovin on 17.08.2017.
@@ -24,6 +28,10 @@ public class SelectTypeDataActivity extends Activity {
     private boolean result;
     private String name_login;
     private String selectLang;
+    private boolean selfLists;
+    private ArrayList<ListJSON_To_ListString> ArrayList_ListJSON_To_ListStringArray;
+    private String CheckRepos;
+    private String CheckStarred;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -33,81 +41,130 @@ public class SelectTypeDataActivity extends Activity {
 
         name_login = getIntent().getExtras().getString("username");
         selectLang = getIntent().getExtras().getString("selectLang");
+
+        if(!selfNameLogin.equals(name_login)) {
+            Log.i(TAG + " GitHub",selfLists + " / " + "name_login: " + name_login + " / selfNameLogin: " + selfNameLogin);
+            selfLists = false;
+        }
+        else selfLists = true;
+
+        selfNameLogin = name_login;
     }
 
     public void onClickRepos(View view) {
-        selfArrayList_ListJSON_To_ListStringArray.clear();
+     //   if(!selfLists && !selfArrayList_ListJSON_To_ListStringArray.get(1).getName().equals(CheckRepos)) {
+            selfArrayList_ListJSON_To_ListStringArray.clear();
 
-        //region CountRepos
-        getGitHubData = new GetGitHubData();
-        getGitHubData.setUser(name_login);
-        getGitHubData.setSelectLang(selectLang);
-        getGitHubData.setChangeReposUser(false);
-        getGitHubData.setAddValueList(false);
-        getGitHubData.execute();
-        try {
-            result = getGitHubData.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            //region CountRepos
+            getGitHubData = new GetGitHubData();
+            getGitHubData.setUser(name_login);
+            getGitHubData.setSelectLang(selectLang);
+            getGitHubData.setChangeReposUser(false);
+            getGitHubData.setAddValueList(false);
+            getGitHubData.execute();
+            try {
+                result = getGitHubData.get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        getGitHubData.cancel(true);
+            getGitHubData.cancel(true);
 
-        Log.i( TAG + " GitHub" ,"CountRepos: " + CountRepos);
-        //endregion CountRepos
+            Log.i(TAG + " GitHub", "CountRepos: " + CountRepos);
+            //endregion CountRepos
 
-        if (result)
-            Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
+            if (result)
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
 
-        getGitHubData.cancel(true);
-        int count = 0;
-        while (true) {
-            if (selfArrayList_ListJSON_To_ListStringArray.size() != CountRepos) {
-                GetGitHubData getGitHubData = new GetGitHubData();
-                getGitHubData.setUser(name_login);
-                getGitHubData.setSelectLang(selectLang);
-                getGitHubData.setCountPage(count++);
-                getGitHubData.setData("repos");
-                getGitHubData.setChangeReposUser(true);
-                getGitHubData.setAddValueList(true);
-                getGitHubData.setIsRateLimit(false);
-                getGitHubData.execute();
-                try {
-                    boolean result = getGitHubData.get();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                getGitHubData.cancel(true);
-                if(count == 3) break;
-            } else break;
-        }
-        Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
-        startActivity(intent);
+            getGitHubData.cancel(true);
+            int countPage = 0;
+            while (true) {
+                if (selfArrayList_ListJSON_To_ListStringArray.size() != CountRepos) {
+                    GetGitHubData getGitHubData = new GetGitHubData();
+                    getGitHubData.setUser(name_login);
+                    getGitHubData.setSelectLang(selectLang);
+                    getGitHubData.setCountPage(++countPage);
+                    getGitHubData.setData("repos");
+                    getGitHubData.setChangeReposUser(true);
+                    if (countPage > 1)
+                        getGitHubData.setAddValueList(true);
+                    else
+                        getGitHubData.setAddValueList(false);
+                    getGitHubData.setIsRateLimit(false);
+                    getGitHubData.execute();
+                    try {
+                        result = getGitHubData.get();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    getGitHubData.cancel(true);
+                    //   if(countPage == 3) break;
+                    if (result) break;
+                    CheckRepos = selfArrayList_ListJSON_To_ListStringArray.get(1).getName();
+                } else break;
+            }
+            Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
+            startActivity(intent);
+       // }else {
+         //   Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
+         //   startActivity(intent);
+       // }
+
     }
 
     public void onClickStarred(View view) {
+        ArrayList_ListJSON_To_ListStringArray = new ArrayList<>();
+      //  if(!selfLists && !selfArrayList_ListJSON_To_ListStringArray.get(1).equals(CheckStarred)) {
         selfArrayList_ListJSON_To_ListStringArray.clear();
 
-        getGitHubData = new GetGitHubData();
-        getGitHubData.setUser(name_login);
-        getGitHubData.setSelectLang(selectLang);
-        getGitHubData.setData("starred");
-        getGitHubData.setChangeReposUser(true);
-        getGitHubData.setAddValueList(false);
-        getGitHubData.setIsRateLimit(false);
-        getGitHubData.execute();
-        try {
-            result = getGitHubData.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
+        int countPage = 0;
+        int count = -1;
+
+        while (true) {
+            if (count != ArrayList_ListJSON_To_ListStringArray.size()) {
+                GetGitHubData getGitHubData = new GetGitHubData();
+                getGitHubData.setUser(name_login);
+                getGitHubData.setSelectLang(selectLang);
+                getGitHubData.setCountPage(++countPage);
+                getGitHubData.setData("starred");
+                getGitHubData.setChangeReposUser(true);
+                getGitHubData.setAddValueList(false);
+                getGitHubData.setIsRateLimit(false);
+                getGitHubData.execute();
+                try {
+                    result = getGitHubData.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                count = ArrayList_ListJSON_To_ListStringArray.size();
+                ArrayList_ListJSON_To_ListStringArray.addAll(selfArrayList_ListJSON_To_ListStringArray);
+                CheckStarred = ArrayList_ListJSON_To_ListStringArray.get(1).getName();
+                selfArrayList_ListJSON_To_ListStringArray.clear();
+                Log.i(TAG + " GitHub", "ArraySize: " + ArrayList_ListJSON_To_ListStringArray.size());
+                getGitHubData.cancel(true);
+                // if(countPage == 3) break;
+                if (result) break;
+            } else break;
         }
         if (result)
-            Toast.makeText(getApplicationContext(), "Возникла ошибка", Toast.LENGTH_SHORT).show();
-        getGitHubData.cancel(true);
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+
+        selfArrayList_ListJSON_To_ListStringArray.clear();
+        selfArrayList_ListJSON_To_ListStringArray = ArrayList_ListJSON_To_ListStringArray;
 
         Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
         startActivity(intent);
+       // }else {
+          //  Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
+          //  startActivity(intent);
+          //}
     }
 
+    public void onClickFollowers(View view) {
+
+    }
+
+    public void onClickFollowing(View view) {
+
+    }
 }

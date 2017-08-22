@@ -18,4 +18,18 @@
         android:onClick="onClickStarred"
         android:text="List of Starred" />
 
+    <Button
+        android:id="@+id/buttonFollowers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickFollowers"
+        android:text="Followers" />
+
+    <Button
+        android:id="@+id/buttonFollowing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickFollowing"
+        android:text="Following" />
+
 </LinearLayout>

@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Список проектов на GitHub</string>
+    <string name="action_settings">Настройки</string>
+    <string name="action_about">О приложении</string>
+    <string name="button_getData">Получить данные</string>
+    <string name="About_str">   "by @NIkDubrovin\n"
+    "По определенным критериям при помощи GitHub API v3, JSON и др. формируется и выводится список проектов + доп. информация.\n"
+    </string>
+    <string name="User_Name">Login пользователя</string>
+    <string name="editTextName"></string>
+    <string-array name="langs">
+        <item>Все</item>
+        <item>Java</item>
+        <item>JavaScript</item>
+        <item>С</item>
+        <item>С++</item>
+        <item>С#</item>
+        <item>Python</item>
+        <item>Ruby</item>
+        <item>PHP</item>
+        <item>CSS</item>
+        <item>Go</item>
+        <item>Shell</item>
+        <item>Scala</item>
+        <item>Swift</item>
+        <item>TypeScript</item>
+        <item>Pascal</item>
+        <item>Lua</item>
+        <item>Makefile</item>
+        <item>VisualBasic</item>
+        <item>Delphi</item>
+        <item>R</item>
+    </string-array>
+    <string name="rate_limit">"Осталось: "</string>
+    <string name="rate_limit_info">Лимит запросов</string>
+    <string name="check_internet">Проверьте подключение к интернету!</string>
+    <string name="check_characters">Проверьте правильность введенных данных!</string>
+    <string name="your_choice">Ваш выбор: </string>
+    <string name="error">Возникла ошибка!</string>
+    <string name="null_select">Ничего не выбрано!</string>
+    <string name="requests">" запросов"</string>
+
+</resources>

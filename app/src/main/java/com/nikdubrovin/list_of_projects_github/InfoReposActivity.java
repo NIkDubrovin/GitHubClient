@@ -38,7 +38,7 @@ public class InfoReposActivity extends Activity {
         textViewName.setText("Name: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getName());
         textViewDesc.setText("Description: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getDesc());
         textViewFork.setText("Fork: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getFork());
-        textViewFork.setText("Language: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getLang());
+        textViewLang.setText("Language: " + selfArrayList_ListJSON_To_ListStringArray.get(index).getLang());
         textViewURL.setText(selfArrayList_ListJSON_To_ListStringArray.get(index).getUrl().toString());
 
         textViewURL.setMovementMethod(LinkMovementMethod.getInstance());
