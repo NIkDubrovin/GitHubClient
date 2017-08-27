@@ -1,15 +1,12 @@
- ### ListOfProjectsGithub
+Lightweight-Stream-API
+======================
+ [![org.json](https://img.shields.io/badge/org.json-library-red.svg)](http://stleary.github.io/JSON-java/)
+ [![GitHubAPI v3](https://img.shields.io/badge/GitHub%20API%20v3-API-blue.svg)](https://developer.github.com/v3/)
  
- <a href="http://www.imageup.ru/img178/2837774/github.jpg.html" target="_blank"><img src="http://www.imageup.ru/img178/2837774/github.jpg"></a>
+<img src = "https://github.com/NIkDubrovin/ListOfProjectsGithub/blob/master/project_logo.jpg" width = "275">
  
 ------------
-### RUS
-------------
-По определенным критериям при помощи GitHub API v3, JSON и др. формируется и выводится список проектов + доп. информация.
-### ENG 
+ По определенным критериям при помощи GitHub API v3, JSON и др. формируется и выводится список проектов + доп. информация.
 ------------
  By using GitHub API v3, JSON, etc. shows the list of projects + additional information.
 
-### Library
-* [org.json](http://stleary.github.io/JSON-java/)
-* [GitHubAPI v3](https://developer.github.com/v3/)
