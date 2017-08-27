@@ -131,5 +131,6 @@ public class MainActivity extends AppCompatActivity {
       //  intent.putExtra("username", "ashleymcnamara");
         if(editText.getText().toString().isEmpty())  Toast.makeText(getApplicationContext(),getResources().getString(R.string.check_characters), Toast.LENGTH_SHORT).show();
         else startActivity(intent);
+
     }
 }

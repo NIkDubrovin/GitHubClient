@@ -3,7 +3,6 @@ package com.nikdubrovin.list_of_projects_github;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,7 +11,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountRepos;
+
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CheckFollowers;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CheckFollowing;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 
 /**
@@ -36,8 +37,14 @@ public class ListOfRepositories extends Activity  {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,list_reposes);
         listView.setAdapter(adapter);
 
-            for (int i = 0; i < selfArrayList_ListJSON_To_ListStringArray.size(); i++)
-                adapter.add(Integer.toString(i) + ". " + selfArrayList_ListJSON_To_ListStringArray.get(i).getName());
+            if(!CheckFollowers && !CheckFollowing) {
+                for (int i = 0; i < selfArrayList_ListJSON_To_ListStringArray.size(); i++)
+                    adapter.add(Integer.toString(i + 1) + ". " + selfArrayList_ListJSON_To_ListStringArray.get(i).getName());
+            }
+            else if(CheckFollowing){
+                for (int i = 0; i < selfArrayList_ListJSON_To_ListStringArray.size(); i++)
+                    adapter.add(Integer.toString(i + 1) + ". " + selfArrayList_ListJSON_To_ListStringArray.get(i).getLogin());
+            }
 
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -57,6 +64,4 @@ public class ListOfRepositories extends Activity  {
         });
         adapter.notifyDataSetChanged();
     }
-
-
 }

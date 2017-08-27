@@ -15,12 +15,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 import static android.util.Log.i;
 
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CheckFollowers;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CheckFollowing;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountFollowers;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountFollowing;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountRepos;
+
 
 /**
  * Created by NikDubrovin on 16.08.2017.
@@ -82,7 +86,7 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-          //  i(TAG,response.toString());
+            i(TAG,response.toString());
             in.close();
             }catch (IOException e){e.printStackTrace();checkNull = true;}
             //endregion Получение строки закончили
@@ -96,38 +100,53 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
 
                     if(AddValueList)
                     {
-                        Log.i(TAG, "CountRepos - selfArray.size() = " + (CountRepos - selfArrayList_ListJSON_To_ListStringArray.size()));
+                        Log.i(TAG, "CountFollowers - selfArray.size() = " + (CountFollowers - selfArrayList_ListJSON_To_ListStringArray.size()));
+                        Log.i(TAG, "CountFollowing - selfArray.size() = " + (CountFollowing - selfArrayList_ListJSON_To_ListStringArray.size()));
                         int temp_size = selfArrayList_ListJSON_To_ListStringArray.size();
+                        if(!CheckFollowers)
                             FinishPut = (CountRepos - temp_size);
+                        else if(CheckFollowers)
+                            FinishPut = (CountFollowers - temp_size);
+                        else if(CheckFollowing)
+                            FinishPut = (CountFollowing - temp_size);
                     }
                     else {
-                        selfArrayList_ListJSON_To_ListStringArray.clear();
+                       // selfArrayList_ListJSON_To_ListStringArray.clear();
                         FinishPut  = listJsonArray.size();
                     }
 
+                    Log.i(TAG,"CheckFollowers: " + CheckFollowers + " / CheckFollowing: " + CheckFollowing);
                     for (int i = 0; i < FinishPut; i++) {
-                        if (listJsonArray.get(i).getString("language").equals(selectLang) || selectLang.equals("All") || selectLang.equals("Все"))
+                        if (!CheckFollowers && !CheckFollowing) {
+                            if (listJsonArray.get(i).getString("language").equals(selectLang) || selectLang.equals("All") || selectLang.equals("Все"))
+                                selfArrayList_ListJSON_To_ListStringArray.add(
+                                        new ListJSON_To_ListString(
+                                                listJsonArray.get(i).
+                                                        put("name", listJsonArray.get(i).getString("name")).
+                                                        put("description", CheckNullData(listJsonArray.get(i).getString("description"), "Description")).
+                                                        put("language", CheckNullData(listJsonArray.get(i).getString("language"), "Language")).
+                                                        put("fork", listJsonArray.get(i).getString("fork")).
+                                                        put("url_repos", listJsonArray.get(i).getString("html_url"))
+                                        )
+                                );
+                            else
+                                i(TAG, "language != selectLang " + listJsonArray.get(i).getString("name") + " / " + "false");
+                        }else if( CheckFollowing)
                             selfArrayList_ListJSON_To_ListStringArray.add(
                                     new ListJSON_To_ListString(
                                             listJsonArray.get(i).
-                                                    put("name", listJsonArray.get(i).getString("name")).
-                                                    put("description",CheckNullData(listJsonArray.get(i).getString("description"),"Description")).
-                                                    put("language", CheckNullData(listJsonArray.get(i).getString("language"),"Language")).
-                                                    put("fork", listJsonArray.get(i).getString("fork")).
-                                                    put("url_repos", listJsonArray.get(i).getString("html_url"))
+                                                    put("login", listJsonArray.get(i).getString("login"))
                                     )
                             );
-                        else
-                            i(TAG, "language != selectLang " + listJsonArray.get(i).getString("name") + " / " + "false");
                     }
-
-
-
                 }
                 else if (!ChangeReposUser && !checkNull && !IsRateLimit){
                     json_about = new JSONObject(response.toString()); // Превращаем String in JSONObject
                     CountRepos = 0;
                     CountRepos = json_about.getInt("public_repos");
+                    CountFollowers = json_about.getInt("followers");
+                    CountFollowing = json_about.getInt("following");
+                    Log.i(TAG, "CountFollowers: " + CountFollowers + " / CountFollowing: "  + CountFollowing);
                 }
                 else if(IsRateLimit && !ChangeReposUser && !checkNull) {
                     CountRateLimit = 0;
@@ -170,9 +189,14 @@ public class GetGitHubData extends AsyncTask<String,Void,Boolean> {
     //endregion
 
     static public class StorageClass{
-        static ArrayList<ListJSON_To_ListString> selfArrayList_ListJSON_To_ListStringArray = new ArrayList<>();
-        static int CountRepos;
-        static String selfNameLogin = "";
+
+        public static ArrayList<ListJSON_To_ListString> selfArrayList_ListJSON_To_ListStringArray = new ArrayList<>();
+        public static int CountRepos;
+        public static int CountFollowers;
+        public static int CountFollowing;
+        public static String selfNameLogin = "";
+        public static boolean CheckFollowers;
+        public static boolean CheckFollowing;
 
         public StorageClass() {}
     }

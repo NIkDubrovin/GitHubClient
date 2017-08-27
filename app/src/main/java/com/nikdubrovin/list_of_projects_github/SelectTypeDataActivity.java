@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CheckFollowers;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CheckFollowing;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountFollowers;
+import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountFollowing;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.CountRepos;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfArrayList_ListJSON_To_ListStringArray;
 import static com.nikdubrovin.list_of_projects_github.GetGitHubData.StorageClass.selfNameLogin;
@@ -49,32 +53,34 @@ public class SelectTypeDataActivity extends Activity {
         else selfLists = true;
 
         selfNameLogin = name_login;
+
+        //region CountRepos
+        getGitHubData = new GetGitHubData();
+        getGitHubData.setUser(name_login);
+        getGitHubData.setSelectLang(selectLang);
+        getGitHubData.setChangeReposUser(false);
+        getGitHubData.setAddValueList(false);
+        getGitHubData.execute();
+        try {
+            result = getGitHubData.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        getGitHubData.cancel(true);
+
+        if (result)
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+        Log.i(TAG + " GitHub", "CountRepos: " + CountRepos + " / CountFollowers: " + CountFollowers + " / CountFollowing: " + CountFollowing);
+        //endregion CountRepos
     }
 
     public void onClickRepos(View view) {
      //   if(!selfLists && !selfArrayList_ListJSON_To_ListStringArray.get(1).getName().equals(CheckRepos)) {
             selfArrayList_ListJSON_To_ListStringArray.clear();
 
-            //region CountRepos
-            getGitHubData = new GetGitHubData();
-            getGitHubData.setUser(name_login);
-            getGitHubData.setSelectLang(selectLang);
-            getGitHubData.setChangeReposUser(false);
-            getGitHubData.setAddValueList(false);
-            getGitHubData.execute();
-            try {
-                result = getGitHubData.get();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            getGitHubData.cancel(true);
-
-            Log.i(TAG + " GitHub", "CountRepos: " + CountRepos);
-            //endregion CountRepos
-
-            if (result)
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+            CheckFollowers = false;
+            CheckFollowing = false;
 
             getGitHubData.cancel(true);
             int countPage = 0;
@@ -86,7 +92,7 @@ public class SelectTypeDataActivity extends Activity {
                     getGitHubData.setCountPage(++countPage);
                     getGitHubData.setData("repos");
                     getGitHubData.setChangeReposUser(true);
-                    if (countPage > 1)
+                    if (countPage > CountRepos/100)
                         getGitHubData.setAddValueList(true);
                     else
                         getGitHubData.setAddValueList(false);
@@ -100,9 +106,12 @@ public class SelectTypeDataActivity extends Activity {
                     getGitHubData.cancel(true);
                     //   if(countPage == 3) break;
                     if (result) break;
-                    CheckRepos = selfArrayList_ListJSON_To_ListStringArray.get(1).getName();
                 } else break;
             }
+
+        if (result)
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
             startActivity(intent);
        // }else {
@@ -114,8 +123,10 @@ public class SelectTypeDataActivity extends Activity {
 
     public void onClickStarred(View view) {
         ArrayList_ListJSON_To_ListStringArray = new ArrayList<>();
-      //  if(!selfLists && !selfArrayList_ListJSON_To_ListStringArray.get(1).equals(CheckStarred)) {
         selfArrayList_ListJSON_To_ListStringArray.clear();
+
+        CheckFollowers = false;
+        CheckFollowing = false;
 
         int countPage = 0;
         int count = -1;
@@ -138,7 +149,6 @@ public class SelectTypeDataActivity extends Activity {
                 }
                 count = ArrayList_ListJSON_To_ListStringArray.size();
                 ArrayList_ListJSON_To_ListStringArray.addAll(selfArrayList_ListJSON_To_ListStringArray);
-                CheckStarred = ArrayList_ListJSON_To_ListStringArray.get(1).getName();
                 selfArrayList_ListJSON_To_ListStringArray.clear();
                 Log.i(TAG + " GitHub", "ArraySize: " + ArrayList_ListJSON_To_ListStringArray.size());
                 getGitHubData.cancel(true);
@@ -154,17 +164,85 @@ public class SelectTypeDataActivity extends Activity {
 
         Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
         startActivity(intent);
-       // }else {
-          //  Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
-          //  startActivity(intent);
-          //}
     }
 
     public void onClickFollowers(View view) {
+        selfArrayList_ListJSON_To_ListStringArray.clear();
 
+        CheckFollowers = true;
+        CheckFollowing = false;
+        getGitHubData.cancel(true);
+        int countPage = 0;
+        while (true) {
+            if (selfArrayList_ListJSON_To_ListStringArray.size() != CountFollowers) {
+                GetGitHubData getGitHubData = new GetGitHubData();
+                getGitHubData.setUser(name_login);
+                getGitHubData.setSelectLang(selectLang);
+                getGitHubData.setCountPage(++countPage);
+                getGitHubData.setData("followers");
+                getGitHubData.setChangeReposUser(true);
+                if (countPage > CountFollowers/100)
+                    getGitHubData.setAddValueList(true);
+                else
+                    getGitHubData.setAddValueList(false);
+                getGitHubData.setIsRateLimit(false);
+                getGitHubData.execute();
+                try {
+                    result = getGitHubData.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                getGitHubData.cancel(true);
+                if (result) break;
+                Log.i(TAG + " GitHub","SelfSize: " + Integer.toString(selfArrayList_ListJSON_To_ListStringArray.size()));
+            } else break;
+        }
+
+        if (result)
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
+        startActivity(intent);
     }
 
     public void onClickFollowing(View view) {
+        selfArrayList_ListJSON_To_ListStringArray.clear();
 
+        CheckFollowers = false;
+        CheckFollowing = true;
+        getGitHubData.cancel(true);
+        int countPage = 0;
+        while (true) {
+            if (selfArrayList_ListJSON_To_ListStringArray.size() != CountFollowing) {
+                GetGitHubData getGitHubData = new GetGitHubData();
+                getGitHubData.setUser(name_login);
+                getGitHubData.setSelectLang(selectLang);
+                getGitHubData.setCountPage(++countPage);
+                getGitHubData.setData("following");
+                getGitHubData.setChangeReposUser(true);
+               // if (countPage > CountFollowing/100)
+                //    getGitHubData.setAddValueList(true);
+              //  else
+                    getGitHubData.setAddValueList(false);
+                getGitHubData.setIsRateLimit(false);
+                getGitHubData.execute();
+                Log.i(TAG + " Github",selfArrayList_ListJSON_To_ListStringArray.get(1).getLogin() + " / CountPage: " + countPage);
+                try {
+                    result = getGitHubData.get();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                getGitHubData.cancel(true);
+                if(countPage == 2) break;
+                if (result) break;
+                Log.i(TAG + " GitHub","SelfSize: " + Integer.toString(selfArrayList_ListJSON_To_ListStringArray.size()));
+            } else break;
+        }
+
+        if (result)
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(SelectTypeDataActivity.this, ListOfRepositories.class);
+        startActivity(intent);
     }
 }
