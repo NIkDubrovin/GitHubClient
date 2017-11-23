@@ -1,13 +1,13 @@
 <resources>
     <!--                        ENG                               -->
-    <string name="app_name">List-of-Projects-Github</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_about">About</string>
+    <string name="app_name" translatable="false">GithubClient</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_about" translatable="false">About</string>
     <string name="button_getData">Get data</string>
     <string name="About_str">   "by @NIkDubrovin\n"
     "By using GitHub API v3, JSON, etc. shows the list of projects + additional information."
     </string>
-    <string name="User_Name">Login User</string>
+    <string name="User_Name" translatable="false">Login User</string>
     <string name="editTextName" translatable="false"></string>
     <string-array name="langs">
         <item>All</item>
@@ -32,13 +32,25 @@
         <item>Delphi</item>
         <item>R</item>
     </string-array>
-    <string name="rate_limit">Rate limit: </string>
+    <string name="rate_limit" translatable="false">Rate limit: </string>
     <string name="rate_limit_info">Rate limit</string>
     <string name="check_internet">Check connection to the Internet!</string>
     <string name="check_characters">Check that you entered the correct characters!</string>
     <string name="your_choice">Your choice</string>
-    <string name="error">Error!</string>
+    <string name="error" translatable="false">Error!</string>
     <string name="null_select">Nothing is selected!</string>
     <string name="requests">" "</string>
+
+    <string name="sign_in" translatable="false" >Sign In</string>
+
+    <string name="repositories">%1$s \'s repositories</string>
+    <string name="your_stars">%1$s \'s stars</string>
+    <string name="following">%1$s \'s following</string>
+    <string name="followers">%1$s \'s followers</string>
+
+    <string name="forks_count">( %1$d )</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

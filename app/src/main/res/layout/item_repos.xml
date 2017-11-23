@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="3dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="3dp"
+    app:cardMaxElevation="@dimen/dimen_5"
+    app:cardPreventCornerOverlap="true"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    android:foreground="?android:attr/selectableItemBackground"
+    >
+
+    <TextView
+        android:id="@+id/lang"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:text="CoffeeScript"
+        android:textSize="13sp"
+        />
+
+    <com.flyco.labelview.LabelView
+        android:id="@+id/label_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        app:lv_text_color="@color/black"
+        app:lv_background_color="@color/white"
+        app:lv_gravity="TOP_RIGHT"
+        app:lv_text="TEST"
+        app:lv_text_size="11sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/icon_repos"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="12dip"
+                android:layout_marginTop="2dip"
+                android:layout_weight="0.04"
+                android:textSize="35dp"
+                app:srcCompat="@mipmap/github"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="61dp"
+                android:layout_marginRight="5dip"
+                android:layout_weight="0.86"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:width="@dimen/dimen_16"
+                        android:singleLine="true"
+                        android:text="@string/app_name"
+                        android:textSize="@dimen/text_size_18"
+                        android:textStyle="bold"
+                        android:layout_weight="0.60"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <ImageView
+                        android:id="@+id/iconStar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="4dip"
+                        app:srcCompat="@mipmap/github"
+                        />
+
+                    <TextView
+                        android:id="@+id/starCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginRight="5dip"
+                        android:layout_weight="0.05"
+                        android:gravity="top"
+                        android:text="100"
+                        android:textColor="@color/black"/>
+
+                    <ImageView
+                        android:id="@+id/iconFork"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="top"
+                        android:layout_marginRight="1dip"
+                        app:srcCompat="@mipmap/github"
+                        />
+
+                    <TextView
+                        android:id="@+id/forkCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="27dp"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="0.12"
+                        android:gravity="top"
+                        android:text="50"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/dimen_5"
+            android:fontFamily="sans-serif"
+            android:gravity="center|left"
+            android:text="@string/app_name"
+            android:textAlignment="1"
+            android:textAllCaps="false"
+            android:textColor="@android:color/background_dark"
+            android:textScaleX="1"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:layout_weight="2.40"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
