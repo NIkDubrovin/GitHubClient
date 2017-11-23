@@ -8,11 +8,11 @@ ListOfProjectsGithub
  [![Glide](https://img.shields.io/badge/glide-image--loading-blue.svg)](https://github.com/bumptech/glide)
  [![FlycoLabelView](https://img.shields.io/badge/FlycoLabelView-iibrary-orange.svg)](https://github.com/H07000223/FlycoLabelView)
 
- <img src = "https://www.dropbox.com/s/3ger3awgoi59u4j/Screenshot_2017-11-23-15-34-46-807_com.nikdubrovin.github_client.png?dl=0" width = "200"> <img src = "https://www.dropbox.com/s/de03zj3b0gznzs7/Screenshot_2017-11-23-15-34-50-361_com.nikdubrovin.github_client.png?dl=0" width = "200">
+ <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-46-807_comnikdubrovingithub_client2923233.jpg" width = "200"> <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-50-361_comnikdubrovingithub_client2923235.jpg" width = "200">
 
- <img src = "https://www.dropbox.com/s/wd6j0otxrpbgexj/Screenshot_2017-11-23-15-34-55-900_com.nikdubrovin.github_client.png?dl=0" width = "200"> <img src = "https://www.dropbox.com/s/ww6l8hml0tf1egb/Screenshot_2017-11-23-15-34-36-967_com.nikdubrovin.list_of_projects_github.png?dl=0" width = "200">
+ <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-55-900_comnikdubrovingithub_client2923236.jpg" width = "200"> <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-36-967_comnikdubrovinlist_of_projects_github2923229.jpg" width = "200">
  
- 
+
  По определенным критериям при помощи GitHub API v3, GSON и др. формируется и выводится список проектов + доп. информация.
 
  By using GitHub API v3, GSON, etc. shows the list of projects + additional information.
