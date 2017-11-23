@@ -8,9 +8,9 @@ ListOfProjectsGithub
  [![Glide](https://img.shields.io/badge/glide-image--loading-blue.svg)](https://github.com/bumptech/glide)
  [![FlycoLabelView](https://img.shields.io/badge/FlycoLabelView-iibrary-orange.svg)](https://github.com/H07000223/FlycoLabelView)
 
- <img src = "https://db.tt/hLrkEaRtJr" width = "200"> <img src = "https://db.tt/5dGu2I3O6f" width = "200">
+ <img src = "https://www.dropbox.com/s/3ger3awgoi59u4j/Screenshot_2017-11-23-15-34-46-807_com.nikdubrovin.github_client.png?dl=0" width = "200"> <img src = "https://www.dropbox.com/s/de03zj3b0gznzs7/Screenshot_2017-11-23-15-34-50-361_com.nikdubrovin.github_client.png?dl=0" width = "200">
 
- <img src = "https://db.tt/0KsEYME2K4" width = "200"> <img src = "https://db.tt/OVmX855rL6" width = "200">
+ <img src = "https://www.dropbox.com/s/wd6j0otxrpbgexj/Screenshot_2017-11-23-15-34-55-900_com.nikdubrovin.github_client.png?dl=0" width = "200"> <img src = "https://www.dropbox.com/s/ww6l8hml0tf1egb/Screenshot_2017-11-23-15-34-36-967_com.nikdubrovin.list_of_projects_github.png?dl=0" width = "200">
  
  
  По определенным критериям при помощи GitHub API v3, GSON и др. формируется и выводится список проектов + доп. информация.
