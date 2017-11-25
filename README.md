@@ -8,9 +8,10 @@ ListOfProjectsGithub
  [![Glide](https://img.shields.io/badge/glide-image--loading-blue.svg)](https://github.com/bumptech/glide)
  [![FlycoLabelView](https://img.shields.io/badge/FlycoLabelView-iibrary-orange.svg)](https://github.com/H07000223/FlycoLabelView)
 
- <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-46-807_comnikdubrovingithub_client2923233.jpg" width = "200"> <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-50-361_comnikdubrovingithub_client2923235.jpg" width = "200">
 
- <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-55-900_comnikdubrovingithub_client2923236.jpg" width = "200"> <img src = "http://www.imageup.ru/img22/thumb/screenshot_2017-11-23-15-34-36-967_comnikdubrovinlist_of_projects_github2923229.jpg" width = "200">
+  <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/Image1.png" width = "200"> <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/image2.png" width = "200">
+
+ <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/image3.png" width = "200"> <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/image4.png" width = "200">
  
 
  По определенным критериям при помощи GitHub API v3, GSON и др. формируется и выводится список проектов + доп. информация.
