@@ -9,9 +9,9 @@ ListOfProjectsGithub
  [![FlycoLabelView](https://img.shields.io/badge/FlycoLabelView-iibrary-orange.svg)](https://github.com/H07000223/FlycoLabelView)
 
 
-  <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/Image1.png" width = "200"> <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/image2.png" width = "200">
+  <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/Image1.png" width = "200"> <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/Image2.png" width = "200">
 
- <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/image3.png" width = "200"> <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/image4.png" width = "200">
+ <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/Image3.png" width = "200"> <img src = "https://github.com/NIkDubrovin/GitHubClient/blob/master/images/Image4.png" width = "200">
  
 
  По определенным критериям при помощи GitHub API v3, GSON и др. формируется и выводится список проектов + доп. информация.
